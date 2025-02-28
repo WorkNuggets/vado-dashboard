@@ -1,114 +1,96 @@
-# TailAdmin Pro - Next.js (v2.0)
+This is a [Next.js](https://nextjs.org/) project bootstrapped
+with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-[TailAdmin](https://tailadmin.com) is a modern, responsive, and customizable admin dashboard template built using Tailwind CSS and Next.js. It is designed to help developers build beautiful and functional dashboards quickly and easily.
+## Getting Started!
 
-## Quick Links
+First, run the development server:
 
-- [✨ Visit Website](https://tailadmin.com)
-- [📄 Documentation](https://tailadmin.com/docs)
-- [⬇️ Download](https://tailadmin.com/download)
-- [🌐 Live Site](https://nextjs-demo.tailadmin.com)
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## Installation
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Prerequisites
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-To get started with TailAdmin, ensure you have the following prerequisites installed and set up:
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and
+load Inter, a custom Google Font.
 
-- Node.js 18.x or later (recommended to use Node.js 20.x or later)
+## Learn More
 
-### Getting Started
+To learn more about Next.js, take a look at the following resources:
 
-1. Install dependencies:
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-   ```bash
-   npm install --legacy-peer-deps
-   # or
-   yarn install
-   ```
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions
+are welcome!
 
-   > Some included packages causes peer-deps issue with React 19 while installing.
-   >
-   > With npm the `--legacy-peer-deps` flag is a workaround for that at the moment.
+## Deploy on Vercel
 
-2. Start the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
+The easiest way to deploy your Next.js app is to use
+the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
+from the creators of Next.js.
 
-## Changelog
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-### Version 2.0.1 - [February 27, 2025]
+## Update Logs
 
-#### Update Overview
+### Version 1.3.3 - [Oct 13, 2024]
+- **Issues 01:** JSvectormap css loading issue. 
+- **Issues 02:** Removed .lock files. 
 
-- Upgraded to Tailwind CSS v4 for better performance and efficiency.
-- Updated class usage to match the latest syntax and features.
-- Replaced deprecated class and optimized styles.
+### Version 1.3.2 - [July 02, 2024]
+- **Issues 01:** JSvectormap rendering issue. 
 
-#### Next Steps
+### Version 1.3.1 - [Feb 12, 2024]
 
-- Run npm install or yarn install to update dependencies.
-- Check for any style changes or compatibility issues.
-- Refer to the Tailwind CSS v4 [Migration Guide](https://tailwindcss.com/docs/upgrade-guide) on this release. if needed.
-- This update keeps the project up to date with the latest Tailwind improvements. 🚀
+#### Issues
 
-### v2.0.0 (February 2025)
+- **Issues 01:** Double scrollbar issue [Tables Six/Pro Tables].
+- **Issues 02:** Fix Misspelling issue [Default Layout/Layouts].
 
-A major update focused on Next.js 15 implementation and comprehensive redesign.
+#### Enhancements
 
-#### Major Improvements
+- **Enhancement 01:** Update style.css.
+- **Enhancement 02:** Update Two Step Verification input typo.
 
-- Complete redesign using Next.js 15 App Router and React Server Components
-- Enhanced user interface with Next.js-optimized components
-- Improved responsiveness and accessibility
-- New features including collapsible sidebar, chat screens, and calendar
-- Redesigned authentication using Next.js App Router and server actions
-- Updated data visualization using ApexCharts for React
 
-#### Breaking Changes
+### Version 1.3.0 - [Feb 05, 2024]
 
-- Migrated from Next.js 14 to Next.js 15
-- Chart components now use ApexCharts for React
-- Authentication flow updated to use Server Actions and middleware
+#### New Features
 
-#### Breaking Changes
+- **Feature 01:** New Dashboard variant Stocks with a DataStats slider, One Chart graph, My Stocks, Trending Stocks, and Latest Transaction Cards.
+- **Feature 02:** Pro Form Elements Range Slider & File Drop Zone.
+- **Feature 03:** Pro Form Layout Contact Form 2 & Survey Form.
+- **Feature 04:** Pro Tables.
+- **Feature 05:** Invoice Two.
+- **Feature 06:** FAQs.
+- **Feature 07:** Teams One & Two.
+- **Feature 08:** Terms & Conditions.
+- **Feature 09:** Avatars One & Two.
+- **Feature 10:** List One, Two & Three.
+- **Feature 11:** Notifications Four.
+- **Feature 12:** Spinners One & Two.
+- **Feature 13:** Coming Soon.
+- **Feature 14:** 2-Step Verification.
+- **Feature 15:** Under Maintenance.
 
-- Migrated from Next.js 14 to Next.js 15
-- Chart components now use ApexCharts for React
-- Authentication flow updated to use Server Actions and middleware
+#### Enhancements
 
-[Read more](https://tailadmin.com/docs/update-logs/nextjs) on this release.
+- **Enhancement 01:** Update Next.js to version 14.
+- **Enhancement 02:** Integrate flatpickr in [Date Picker/Form Elements].
+- **Enhancement 03:** Change color after selecting an option [Select Element/Form Elements].
+- **Enhancement 04:** Make it functional [Multiselect Dropdown/Form Elements].
+- **Enhancement 05:** Make the best value editable [Pricing Table One/Pricing Table].
+- **Enhancement 06:** Add Default Layout Component and make App/Layout cleaner and use it on every page.
 
-### v1.3.4 (July 01, 2024)
+### Version 0.1.0 - Initial Release - [Aug 3, 2023]
 
-- Fixed JSvectormap rendering issues
-
-### v1.3.3 (June 20, 2024)
-
-- Fixed build error related to Loader component
-
-### v1.3.2 (June 19, 2024)
-
-- Added ClickOutside component for dropdown menus
-- Refactored sidebar components
-- Updated Jsvectormap package
-
-### v1.3.1 (Feb 12, 2024)
-
-- Fixed layout naming consistency
-- Updated styles
-
-### v1.3.0 (Feb 05, 2024)
-
-- Upgraded to Next.js 14
-- Added Flatpickr integration
-- Improved form elements
-- Enhanced multiselect functionality
-- Added default layout component
-
-## License
-
-Refer to our [LICENSE](https://tailadmin.com/license) page for more information.
+- Initial release of TailAdmin Next.
