@@ -1,6 +1,16 @@
 [build]
-  command = "npm run build"
+  command = "pnpm install --frozen-lockfile && pnpm run build"
   publish = ".next"
+  environment = { NODE_VERSION = "18", NETLIFY_USE_PNPM = "true" }
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[functions]
+  node_bundler = "esbuild"
+
+[dev]
+  framework = "next"
+  command = "pnpm run dev"
+  targetPort = 3000
+  port = 8888
