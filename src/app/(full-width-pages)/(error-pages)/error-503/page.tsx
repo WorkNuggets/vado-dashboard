@@ -5,9 +5,8 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Error 503 | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Error 503 page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+  title: "VADO Error 503",
+  description: "This is Error 503 Page",
 };
 
 export default function page() {
@@ -21,14 +20,14 @@ export default function page() {
         </h1>
 
         <Image
-          src="./images/error/503.svg"
+          src="/public/images/error/503.svg"
           alt="503"
           width={500}
           height={150}
           className="dark:hidden"
         />
         <Image
-          src="./images/error/503-dark.svg"
+          src="/public/images/error/503-dark.svg"
           alt="503"
           className="hidden dark:block"
           width={500}

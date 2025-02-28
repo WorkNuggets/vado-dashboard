@@ -5,9 +5,8 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Error 500 | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Error 500 page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+  title: "VADO Error 500",
+  description: "This is Error 500 Page",
 };
 
 export default function Error500() {
@@ -21,14 +20,14 @@ export default function Error500() {
         </h1>
 
         <Image
-          src="./images/error/500.svg"
+          src="/public/images/error/500.svg"
           alt="500"
           className="dark:hidden"
           width={560}
           height={154}
         />
         <Image
-          src="./images/error/500-dark.svg"
+          src="/public/images/error/500-dark.svg"
           alt="500"
           className="hidden dark:block"
           width={560}

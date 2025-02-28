@@ -6,9 +6,8 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Faq's | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Faq's page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+  title: "VADO Faq's",
+  description: "This is Faq's Page",
 };
 
 export default function Faq() {

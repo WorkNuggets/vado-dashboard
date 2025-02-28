@@ -8,9 +8,8 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Dropdowns | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Dropdowns page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+  title: "VADO Dropdowns",
+  description: "This is Dropdowns Page",
   // other metadata
 };
 

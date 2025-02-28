@@ -5,9 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Next.js Coming Soon | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Coming Soon page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+  title: "VADO Coming Soon",
+  description: "This is Coming Soon Page",
 };
 
 export default function ComingSoon() {
@@ -23,14 +22,14 @@ export default function ComingSoon() {
           <Link href="/" className="inline-block mb-6">
             <Image
               className="dark:hidden"
-              src="./images/logo/logo.svg"
+              src="/public/images/logo/logo.png"
               alt="Logo"
               width={154}
               height={32}
             />
             <Image
               className="hidden dark:block"
-              src="./images/logo/logo-dark.svg"
+              src="/public/images/logo/logo-dark.png"
               alt="Logo"
               width={154}
               height={32}

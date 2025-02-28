@@ -5,9 +5,8 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Success | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Success page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+  title: "VADO Success",
+  description: "This is Success Page",
 };
 
 export default function Success() {
@@ -17,14 +16,14 @@ export default function Success() {
       <div className="mx-auto w-full max-w-[274px] text-center sm:max-w-[555px]">
         <div className="mx-auto mb-10 w-full max-w-[100px] text-center sm:max-w-[160px]">
           <Image
-            src="./images/error/success.svg"
+            src="/public/images/error/success.svg"
             alt="success"
             className="dark:hidden"
             width={148}
             height={148}
           />
           <Image
-            src="./images/error/success-dark.svg"
+            src="/public/images/error/success-dark.svg"
             alt="success"
             className="hidden dark:block"
             width={148}

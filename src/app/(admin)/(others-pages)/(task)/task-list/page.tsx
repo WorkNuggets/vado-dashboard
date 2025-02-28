@@ -1,12 +1,11 @@
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import React from "react";
-import { Metadata } from "next";
 import TaskList from "@/components/task/task-list/TaskList";
+import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Task List | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Task List page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+  title: "VADO Task List",
+  description: "This is Task List Page",
   // other metadata
 };
 

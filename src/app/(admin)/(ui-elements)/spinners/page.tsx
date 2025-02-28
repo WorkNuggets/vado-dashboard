@@ -2,16 +2,15 @@ import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import React from "react";
 
-import SpinnerTwo from "./SpinnerTwo";
-import SpinnerThree from "./SpinnerThree";
-import SpinnerFour from "./SpinnerFour";
 import { Metadata } from "next";
+import SpinnerFour from "./SpinnerFour";
 import SpinnerOne from "./SpinnerOne";
+import SpinnerThree from "./SpinnerThree";
+import SpinnerTwo from "./SpinnerTwo";
 
 export const metadata: Metadata = {
-  title: "Next.js Spinners | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Spinners page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+  title: "VADO Spinners",
+  description: "This is Spinners Page",
 };
 
 export default function Spinners() {

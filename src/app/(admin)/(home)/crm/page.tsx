@@ -7,9 +7,8 @@ import UpcomingSchedule from "@/components/crm/UpcomingSchedule";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Next.js CRM Dashboard | TailAdmin - Next.js Admin Dashboard Template",
-  description:
-    "This is Next.js CRM Dashboard page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+  title: "VADO CRM Dashboard - Admin Dashboard Template",
+  description: "This is CRM Dashboard Page",
 };
 
 export default function Crm() {

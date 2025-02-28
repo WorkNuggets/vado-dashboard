@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { useModal } from "../../hooks/useModal";
-import { Modal } from "../ui/modal";
-import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
+import Button from "../ui/button/Button";
+import { Modal } from "../ui/modal";
 
 export default function UserAddressCard() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -45,7 +45,7 @@ export default function UserAddressCard() {
                 <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                   Postal Code
                 </p>
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">ERT 2489</p>
+                <p className="text-sm font-medium text-gray-800 dark:text-white/90">97217</p>
               </div>
 
               <div>
@@ -105,7 +105,7 @@ export default function UserAddressCard() {
 
                 <div>
                   <Label>Postal Code</Label>
-                  <Input type="text" defaultValue="ERT 2489" />
+                  <Input type="text" defaultValue="97217" />
                 </div>
 
                 <div>
