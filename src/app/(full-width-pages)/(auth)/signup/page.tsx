@@ -2,8 +2,8 @@ import SignUpForm from "@/components/auth/SignUpForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "VADO SignUp Page",
-  description: "This is SignUp Page TailAdmin Dashboard Template",
+  title: "VADO Sign Up Page",
+  description: "This is Sign Up Page VADO Dashboard",
   // other metadata
 };
 

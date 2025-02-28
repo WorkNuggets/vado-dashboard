@@ -4,7 +4,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title:
     "VADO Two Step Verification Page",
-  description: "This is SignUp Page TailAdmin Dashboard Template",
+  description: "This is Sign Up Page VADO Dashboard",
   // other metadata
 };
 

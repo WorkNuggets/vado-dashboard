@@ -4,7 +4,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Blank Page",
-  description: "This is Blank Page TailAdmin Dashboard Template",
+  description: "This is Blank Page VADO Dashboard",
 };
 
 export default function BlankPage() {
