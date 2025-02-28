@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "start": "pnpm run dev",
     "build": "next build",
-    "start": "next start",
+    "serve": "next start",
     "lint": "next lint"
   },
   "dependencies": {
