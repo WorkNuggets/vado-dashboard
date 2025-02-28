@@ -1,11 +1,11 @@
 "use client";
+import { useModal } from "@/hooks/useModal";
 import React from "react";
 import ComponentCard from "../../common/ComponentCard";
-import Button from "../../ui/button/Button";
-import { Modal } from "../../ui/modal";
 import Label from "../../form/Label";
 import Input from "../../form/input/InputField";
-import { useModal } from "@/hooks/useModal";
+import Button from "../../ui/button/Button";
+import { Modal } from "../../ui/modal";
 
 export default function FormInModal() {
   const { isOpen, openModal, closeModal } = useModal();
@@ -47,7 +47,7 @@ export default function FormInModal() {
 
             <div className="col-span-1">
               <Label>Phone</Label>
-              <Input type="text" placeholder="+09 363 398 46" />
+              <Input type="text" placeholder="+1 541 602 9541" />
             </div>
 
             <div className="col-span-1 sm:col-span-2">

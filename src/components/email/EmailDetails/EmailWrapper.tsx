@@ -2,8 +2,8 @@
 import Image from "next/image";
 import React from "react";
 import SimpleBar from "simplebar-react";
-import EmailDetailsHeader from "./EmailDetailsHeader";
 import EmailDetailsBottom from "./EmailDetailsBottom";
+import EmailDetailsHeader from "./EmailDetailsHeader";
 
 export default function EmailWrapper() {
   return (
@@ -99,7 +99,7 @@ export default function EmailWrapper() {
               <div className="relative hover:border-gray-300 dark:hover:border-white/[0.05] flex w-full cursor-pointer items-center gap-3 rounded-xl border border-gray-200 bg-white py-2.5 pl-3 pr-5 dark:border-gray-800 dark:bg-white/5 sm:w-auto">
                 <div className="w-full h-10 max-w-10">
                   <Image
-                    src="./images/task/pdf.svg"
+                    src="/public/images/task/pdf.svg"
                     width={40}
                     height={40}
                     className="w-full"
@@ -127,7 +127,7 @@ export default function EmailWrapper() {
                   <Image
                     width={40}
                     height={40}
-                    src="./images/task/google-drive.svg"
+                    src="/public/images/task/google-drive.svg"
                     alt="icon"
                   />
                 </div>

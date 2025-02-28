@@ -53,7 +53,7 @@ const navItems: NavItem[] = [
     path: "/profile",
   },
   {
-    name: "Task",
+    name: "Tasks",
     icon: <TaskIcon />,
     subItems: [
       { name: "List", path: "/task-list" },
@@ -106,7 +106,7 @@ const othersItems: NavItem[] = [
   },
   {
     icon: <BoxCubeIcon />,
-    name: "UI Elements",
+    name: "Packages",
     subItems: [
       { name: "Alerts", path: "/alerts" },
       { name: "Avatar", path: "/avatars" },
@@ -396,14 +396,14 @@ const AppSidebar: React.FC = () => {
             <>
               <Image
                 className="dark:hidden"
-                src="/images/logo/logo.svg"
+                src="/images/logo/logo.png"
                 alt="Logo"
                 width={150}
                 height={40}
               />
               <Image
                 className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
+                src="/images/logo/logo-dark.png"
                 alt="Logo"
                 width={150}
                 height={40}
@@ -472,7 +472,7 @@ const AppSidebar: React.FC = () => {
             </div>
           </div>
         </nav>
-        {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
+        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
       </div>
     </aside>
   );

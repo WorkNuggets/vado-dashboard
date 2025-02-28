@@ -21,14 +21,14 @@ export default function page() {
         </h1>
 
         <Image
-          src="./images/error/503.svg"
+          src="/public/images/error/503.svg"
           alt="503"
           width={500}
           height={150}
           className="dark:hidden"
         />
         <Image
-          src="./images/error/503-dark.svg"
+          src="/public/images/error/503-dark.svg"
           alt="503"
           className="hidden dark:block"
           width={500}
