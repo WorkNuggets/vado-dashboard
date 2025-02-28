@@ -101,7 +101,7 @@ export default function PieChartTwo() {
         },
       ],
     }),
-    [isDarkMode]
+    [isDarkMode],
   );
 
   // Chart data series
@@ -109,12 +109,7 @@ export default function PieChartTwo() {
   return (
     <div className="flex justify-center">
       <div id="chartDarkStyle">
-        <ReactApexChart
-          options={options}
-          series={series}
-          type="donut"
-          width="400"
-        />
+        <ReactApexChart options={options} series={series} type="donut" width="400" />
       </div>
     </div>
   );

@@ -1,13 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "../../../ui/table";
+import { Table, TableBody, TableCell, TableHeader, TableRow } from "../../../ui/table";
 import { AngleDownIcon, AngleUpIcon } from "@/icons";
 import Image from "next/image";
 import PaginationWithIcon from "./PaginationWithIcon";
@@ -150,9 +144,8 @@ export default function DataTableOne() {
       .filter((item) =>
         Object.values(item).some(
           (value) =>
-            typeof value === "string" &&
-            value.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+            typeof value === "string" && value.toLowerCase().includes(searchTerm.toLowerCase()),
+        ),
       )
       .sort((a, b) => {
         if (sortKey === "name") {
@@ -291,16 +284,12 @@ export default function DataTableOne() {
                       <button className="flex flex-col gap-0.5">
                         <AngleUpIcon
                           className={`text-gray-300 dark:text-gray-700 ${
-                            sortKey === key && sortOrder === "asc"
-                              ? "text-brand-500"
-                              : ""
+                            sortKey === key && sortOrder === "asc" ? "text-brand-500" : ""
                           }`}
                         />
                         <AngleDownIcon
                           className={`text-gray-300 dark:text-gray-700 ${
-                            sortKey === key && sortOrder === "desc"
-                              ? "text-brand-500"
-                              : ""
+                            sortKey === key && sortOrder === "desc" ? "text-brand-500" : ""
                           }`}
                         />
                       </button>

@@ -54,20 +54,20 @@ export const Tooltip: React.FC<TooltipProps> = ({
       {children}
       <div
         className={`invisible absolute z-30 opacity-0 transition-opacity duration-300 group-hover:visible group-hover:opacity-100 ${getPositionClasses(
-          position
+          position,
         )}`}
       >
         <div className="relative">
           <div
             className={`${getThemeClasses(
-              theme
+              theme,
             )} whitespace-nowrap rounded-lg  px-3 py-2 text-xs font-medium text-gray-700 drop-shadow-4xl dark:bg-[#1E2634] dark:text-white`}
           >
             {content}
           </div>
           <div
             className={`absolute h-3 w-4 rotate-45 ${getThemeClasses(
-              theme
+              theme,
             )} ${getArrowClasses(position)}`}
           ></div>
         </div>

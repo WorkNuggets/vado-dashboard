@@ -1,13 +1,7 @@
 "use client";
 import { useState } from "react";
 import Badge from "../../ui/badge/Badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "../../ui/table";
+import { Table, TableBody, TableCell, TableHeader, TableRow } from "../../ui/table";
 import Button from "../../ui/button/Button";
 import Image from "next/image";
 
@@ -246,12 +240,7 @@ export default function BasicTableThree() {
                   <TableCell className="px-4 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8">
-                        <Image
-                          width={32}
-                          height={32}
-                          src={item.image}
-                          alt="brand"
-                        />
+                        <Image width={32} height={32} src={item.image} alt="brand" />
                       </div>
                       <div>
                         <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
@@ -276,8 +265,8 @@ export default function BasicTableThree() {
                         item.status === "Success"
                           ? "success"
                           : item.status === "Pending"
-                          ? "warning"
-                          : "error"
+                            ? "warning"
+                            : "error"
                       }
                     >
                       {item.status}

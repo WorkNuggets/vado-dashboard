@@ -132,14 +132,11 @@ export default function TaskList() {
     initialTasks.map((task) => ({
       ...task,
       toggleChecked: () => toggleChecked(task.id),
-    }))
+    })),
   );
   const [dragging, setDragging] = useState<string | null>(null);
 
-  const handleDragStart = (
-    e: React.DragEvent<HTMLDivElement>,
-    taskId: string
-  ) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, taskId: string) => {
     setDragging(taskId);
   };
 
@@ -151,9 +148,7 @@ export default function TaskList() {
     e.preventDefault();
     if (dragging === null) return;
 
-    const updatedTasks = tasks.map((task) =>
-      task.id === dragging ? { ...task, status } : task
-    );
+    const updatedTasks = tasks.map((task) => (task.id === dragging ? { ...task, status } : task));
 
     // Sort tasks within the same status
     const statusTasks = updatedTasks.filter((task) => task.status === status);
@@ -183,8 +178,8 @@ export default function TaskList() {
   const toggleChecked = (taskId: string) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === taskId ? { ...task, isChecked: !task.isChecked } : task
-      )
+        task.id === taskId ? { ...task, isChecked: !task.isChecked } : task,
+      ),
     );
   };
   return (
