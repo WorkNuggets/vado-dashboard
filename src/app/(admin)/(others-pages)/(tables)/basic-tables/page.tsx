@@ -11,8 +11,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Basic Data Table",
-  description:
-    "This is Basic Data Table Page",
+  description: "This is Basic Data Table Page",
 };
 
 export default function BasicTables() {

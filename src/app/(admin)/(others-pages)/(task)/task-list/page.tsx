@@ -5,8 +5,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Task List",
-  description:
-    "This is Task List Page",
+  description: "This is Task List Page",
   // other metadata
 };
 

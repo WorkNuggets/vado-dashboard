@@ -7,8 +7,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Bar Chart",
-  description:
-    "This is Bar Chart Page",
+  description: "This is Bar Chart Page",
 };
 
 export default function page() {

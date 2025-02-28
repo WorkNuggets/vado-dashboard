@@ -9,8 +9,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Dropdowns",
-  description:
-    "This is Dropdowns Page",
+  description: "This is Dropdowns Page",
   // other metadata
 };
 

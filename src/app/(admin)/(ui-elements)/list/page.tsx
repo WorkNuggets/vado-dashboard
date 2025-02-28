@@ -12,8 +12,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO List",
-  description:
-    "This is List Page",
+  description: "This is List Page",
 };
 
 export default function List() {

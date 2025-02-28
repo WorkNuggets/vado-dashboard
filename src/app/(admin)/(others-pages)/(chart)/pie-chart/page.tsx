@@ -7,8 +7,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Pie Chart",
-  description:
-    "This is Pie Chart Page",
+  description: "This is Pie Chart Page",
 };
 
 export default function PieChart() {

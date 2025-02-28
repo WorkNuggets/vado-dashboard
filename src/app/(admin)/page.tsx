@@ -9,8 +9,8 @@ import React from "react";
 
 export const metadata: Metadata = {
   title:
-  // "VADO E-commerce Dashboard",
-  "VADO Real Estate Dashboard",
+    // "VADO E-commerce Dashboard",
+    "VADO Real Estate Dashboard",
   description: "This is Home for VADO Real Estate Dashboard Template",
 };
 

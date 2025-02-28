@@ -8,8 +8,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO FileManager",
-  description:
-    "This is FileManager Page",
+  description: "This is FileManager Page",
   // other metadata
 };
 

@@ -8,8 +8,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Breadcrumbs",
-  description:
-    "This is Breadcrumbs Page",
+  description: "This is Breadcrumbs Page",
   // other metadata
 };
 

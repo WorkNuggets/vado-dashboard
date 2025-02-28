@@ -9,8 +9,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Progress",
-  description:
-    "This is Progress Page",
+  description: "This is Progress Page",
   // other metadata
 };
 

@@ -6,8 +6,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Success",
-  description:
-    "This is Success Page",
+  description: "This is Success Page",
 };
 
 export default function Success() {
@@ -37,8 +36,8 @@ export default function Success() {
         </h1>
 
         <p className="mt-6 mb-6 text-base text-gray-700 dark:text-gray-400 sm:text-lg">
-          Awesome! your message has been sent successfully, Our support team
-          will get back to you as soon as possible.
+          Awesome! your message has been sent successfully, Our support team will get back to you as
+          soon as possible.
         </p>
 
         <Link

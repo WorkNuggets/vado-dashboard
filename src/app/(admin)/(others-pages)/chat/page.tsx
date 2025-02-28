@@ -6,8 +6,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Messages",
-  description:
-    "This is Messages Page",
+  description: "This is Messages Page",
   // other metadata
 };
 

@@ -6,8 +6,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Error 404",
-  description:
-    "This is Error 404 Page",
+  description: "This is Error 404 Page",
 };
 
 export default function Error404() {

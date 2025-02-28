@@ -5,8 +5,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Calender",
-  description:
-    "This is Calender Page VADO Admin Dashboard",
+  description: "This is Calender Page VADO Admin Dashboard",
   // other metadata
 };
 export default function page() {

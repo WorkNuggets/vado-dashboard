@@ -14,8 +14,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Form Elements",
-  description:
-    "This is Form Elements Page",
+  description: "This is Form Elements Page",
 };
 
 export default function FormElements() {

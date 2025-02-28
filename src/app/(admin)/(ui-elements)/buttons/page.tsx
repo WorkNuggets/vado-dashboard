@@ -7,8 +7,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Buttons",
-  description:
-    "This is Buttons Page",
+  description: "This is Buttons Page",
 };
 
 export default function Buttons() {

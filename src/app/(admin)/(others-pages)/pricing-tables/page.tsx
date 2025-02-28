@@ -8,8 +8,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Pricing Table",
-  description:
-    "This is Pricing Table Page",
+  description: "This is Pricing Table Page",
 };
 
 export default function PricingTables() {

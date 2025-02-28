@@ -8,8 +8,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Link",
-  description:
-    "This is Link Page",
+  description: "This is Link Page",
 };
 
 export default function Links() {

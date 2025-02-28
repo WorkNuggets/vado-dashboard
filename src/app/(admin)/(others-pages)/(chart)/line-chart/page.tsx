@@ -8,8 +8,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Line Chart",
-  description:
-    "This is Line Chart Page",
+  description: "This is Line Chart Page",
 };
 export default function LineChart() {
   return (

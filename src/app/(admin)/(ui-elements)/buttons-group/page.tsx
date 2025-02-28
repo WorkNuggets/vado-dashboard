@@ -11,8 +11,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Button Groups",
-  description:
-    "This is Button Groups Page",
+  description: "This is Button Groups Page",
 };
 
 export default function ButtonsGroupPage() {

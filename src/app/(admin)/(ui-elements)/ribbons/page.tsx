@@ -6,8 +6,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Ribbons",
-  description:
-    "This is Spinners Page",
+  description: "This is Spinners Page",
 };
 
 export default function Ribbons() {

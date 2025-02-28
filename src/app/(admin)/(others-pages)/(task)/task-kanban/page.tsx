@@ -5,8 +5,7 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title:
-    "Task Kanban Dashboard -VADO Admin Dashboard",
+  title: "Task Kanban Dashboard -VADO Admin Dashboard",
   description: "Tailwind Admin Dashboard",
 };
 

@@ -10,8 +10,8 @@ export default function SidebarWidget() {
         Elevate Your Real Estate Management
       </h3>
       <p className="mb-4 text-gray-500 text-theme-sm dark:text-gray-400">
-        VADO: The premier platform for real estate professionals. Streamline your property
-        portfolio with cutting-edge tools and insights.
+        VADO: The premier platform for real estate professionals. Streamline your property portfolio
+        with cutting-edge tools and insights.
       </p>
       <a
         href="https://vadoapp.com/pricing"

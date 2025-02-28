@@ -9,8 +9,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Advanced Data Table",
-  description:
-    "This is Advanced Data Table Page",
+  description: "This is Advanced Data Table Page",
 };
 
 export default function DataTables() {

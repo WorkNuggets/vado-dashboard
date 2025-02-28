@@ -7,10 +7,8 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title:
-    "VADO Marketing Dashboard - Admin Dashboard Template",
-  description:
-    "This is Marketing Dashboard Page",
+  title: "VADO Marketing Dashboard - Admin Dashboard Template",
+  description: "This is Marketing Dashboard Page",
 };
 
 export default function Marketing() {

@@ -17,12 +17,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               <GridShape />
               <div className="flex flex-col items-center max-w-xs">
                 <Link href="/" className="block mb-4">
-                  <Image
-                    width={38}
-                    height={38}
-                    src="./images/logo/logo-icon.svg"
-                    alt="Logo"
-                  />
+                  <Image width={38} height={38} src="./images/logo/logo-icon.svg" alt="Logo" />
                 </Link>
                 <p className="text-center text-gray-400 dark:text-white/60">
                   Empowering Real Estate Professionals with Smart Property Management Solutions

@@ -8,8 +8,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "VADO CRM Dashboard - Admin Dashboard Template",
-  description:
-    "This is CRM Dashboard Page",
+  description: "This is CRM Dashboard Page",
 };
 
 export default function Crm() {

@@ -5,8 +5,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Reset Password",
-  description:
-    "This is Password Reset Page Dashboard Template",
+  description: "This is Password Reset Page Dashboard Template",
   // other metadata
 };
 

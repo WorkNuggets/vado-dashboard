@@ -9,8 +9,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Carousel",
-  description:
-    "This is Carousel Page",
+  description: "This is Carousel Page",
   // other metadata
 };
 

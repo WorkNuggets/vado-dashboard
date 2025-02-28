@@ -8,8 +8,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Cards",
-  description:
-    "This is Cards Page",
+  description: "This is Cards Page",
 };
 
 export default function Cards() {

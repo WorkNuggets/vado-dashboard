@@ -5,8 +5,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Notifications",
-  description:
-    "This is Notifications Page",
+  description: "This is Notifications Page",
 };
 
 export default function Notifications() {

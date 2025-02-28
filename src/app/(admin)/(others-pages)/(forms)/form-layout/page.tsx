@@ -8,8 +8,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Form Layout",
-  description:
-    "This is Form Layout Page",
+  description: "This is Form Layout Page",
 };
 
 export default function FormLayout() {

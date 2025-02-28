@@ -5,8 +5,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Invoice",
-  description:
-    "This is Invoice Page",
+  description: "This is Invoice Page",
 };
 
 export default function InvoicePage() {

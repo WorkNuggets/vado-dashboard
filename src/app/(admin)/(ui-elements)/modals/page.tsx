@@ -9,8 +9,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Modals",
-  description:
-    "This is Modals Page",
+  description: "This is Modals Page",
   // other metadata
 };
 

@@ -6,8 +6,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Profile",
-  description:
-    "This is Profile Page",
+  description: "This is Profile Page",
 };
 
 export default function Profile() {

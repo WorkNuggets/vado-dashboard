@@ -10,8 +10,7 @@ import SpinnerTwo from "./SpinnerTwo";
 
 export const metadata: Metadata = {
   title: "VADO Spinners",
-  description:
-    "This is Spinners Page",
+  description: "This is Spinners Page",
 };
 
 export default function Spinners() {

@@ -5,8 +5,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Pagination",
-  description:
-    "This is Pagination Page",
+  description: "This is Pagination Page",
 };
 
 export default function Pagination() {

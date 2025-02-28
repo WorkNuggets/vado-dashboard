@@ -8,8 +8,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Popovers",
-  description:
-    "This is Popovers Page",
+  description: "This is Popovers Page",
 };
 
 export default function Popovers() {

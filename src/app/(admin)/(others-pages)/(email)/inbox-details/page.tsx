@@ -7,8 +7,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Inbox Details",
-  description:
-    "This is Inbox Details Page",
+  description: "This is Inbox Details Page",
 };
 
 export default function InboxDetails() {

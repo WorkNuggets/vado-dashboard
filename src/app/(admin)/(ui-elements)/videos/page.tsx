@@ -5,8 +5,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Videos",
-  description:
-    "This is Videos Page",
+  description: "This is Videos Page",
 };
 
 export default function VideoPage() {

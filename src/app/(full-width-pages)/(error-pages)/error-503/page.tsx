@@ -6,8 +6,7 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "VADO Error 503",
-  description:
-    "This is Error 503 Page",
+  description: "This is Error 503 Page",
 };
 
 export default function page() {
