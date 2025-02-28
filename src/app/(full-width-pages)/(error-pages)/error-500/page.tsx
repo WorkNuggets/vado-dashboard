@@ -5,9 +5,9 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Error 500 | TailAdmin - Next.js Dashboard Template",
+  title: "VADO Error 500",
   description:
-    "This is Next.js Error 500 page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Error 500 Page",
 };
 
 export default function Error500() {

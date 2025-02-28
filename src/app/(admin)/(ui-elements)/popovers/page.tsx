@@ -7,9 +7,9 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Popovers | TailAdmin - Next.js Dashboard Template",
+  title: "VADO Popovers",
   description:
-    "This is Next.js Popovers page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Popovers Page",
 };
 
 export default function Popovers() {

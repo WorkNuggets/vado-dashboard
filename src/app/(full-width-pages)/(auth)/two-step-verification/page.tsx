@@ -3,8 +3,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title:
-    "Next.js Two Step Verification Page | TailAdmin - Next.js Dashboard Template",
-  description: "This is Next.js SignUp Page TailAdmin Dashboard Template",
+    "VADO Two Step Verification Page",
+  description: "This is SignUp Page TailAdmin Dashboard Template",
   // other metadata
 };
 

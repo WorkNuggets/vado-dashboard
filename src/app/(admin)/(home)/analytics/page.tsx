@@ -11,9 +11,9 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Analytics Dashboard | TailAdmin - Next.js Dashboard Template",
+  title: "VADO Analytics Dashboard",
   description:
-    "This is Next.js Analytics Dashboard page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Analytics Dashboard Page",
 };
 
 export default function Analytics() {

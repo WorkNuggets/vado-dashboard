@@ -1,16 +1,16 @@
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import DataTableTwo from "@/components/tables/DataTables/TableTwo/DataTableTwo";
 import DataTableOne from "@/components/tables/DataTables/TableOne/DataTableOne";
 import DataTableThree from "@/components/tables/DataTables/TableThree/DataTableThree";
+import DataTableTwo from "@/components/tables/DataTables/TableTwo/DataTableTwo";
 
 import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Advanced Data Table | TailAdmin - Next.js Dashboard Template",
+  title: "VADO Advanced Data Table",
   description:
-    "This is Next.js Advanced Data Table page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Advanced Data Table Page",
 };
 
 export default function DataTables() {

@@ -10,9 +10,9 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Button Groups | TailAdmin - Next.js Dashboard Template",
+  title: "VADO Button Groups",
   description:
-    "This is Next.js Button Groups page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Button Groups Page",
 };
 
 export default function ButtonsGroupPage() {

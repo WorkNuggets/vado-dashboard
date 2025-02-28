@@ -5,9 +5,9 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Success | TailAdmin - Next.js Dashboard Template",
+  title: "VADO Success",
   description:
-    "This is Next.js Success page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Success Page",
 };
 
 export default function Success() {

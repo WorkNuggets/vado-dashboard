@@ -5,9 +5,9 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Error 503 | TailAdmin - Next.js Dashboard Template",
+  title: "VADO Error 503",
   description:
-    "This is Next.js Error 503 page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Error 503 Page",
 };
 
 export default function page() {

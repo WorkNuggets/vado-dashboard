@@ -6,9 +6,9 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Pie Chart | TailAdmin - Next.js Dashboard Template",
+  title: "VADO Pie Chart",
   description:
-    "This is Next.js Pie Chart page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Pie Chart Page",
 };
 
 export default function PieChart() {
