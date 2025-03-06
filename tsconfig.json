@@ -34,7 +34,5 @@
   "exclude": [
     "node_modules",
     "dist/",
-    "tailwind.config.ts",
-    ".prettierrc.cts"
   ]
 }

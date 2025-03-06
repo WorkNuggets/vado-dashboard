@@ -1,10 +1,9 @@
-import typographyPlugin from '@tailwindcss/typography'
 import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 import plugin from 'tailwindcss/plugin'
 
 export default {
-  content: ['./src/**/*.{astro,html,js,jsx,json,md,mdx,svelte,ts,tsx,vue}'],
+  content: ['./src/**/*.{js,jsx,json,md,mdx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -40,7 +39,6 @@ export default {
     },
   },
   plugins: [
-    typographyPlugin,
     plugin(({ addVariant }) => {
       addVariant('intersect', '&:not([no-intersect])')
     }),
