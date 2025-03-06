@@ -23,8 +23,18 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    },
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "dist/", "tailwind.config.ts", "eslint.config.ts", ".prettierrc.cts"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "dist/",
+    "tailwind.config.ts",
+    ".prettierrc.cts"
+  ]
 }
