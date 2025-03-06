@@ -1,6 +1,7 @@
 "use client";
 import { Dropdown } from "@/components/ui/dropdown/Dropdown";
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
+import { signOut } from "next-auth/react";
 import React, { useState } from "react";
 
 export default function DropdownWithIcon() {
@@ -13,6 +14,12 @@ export default function DropdownWithIcon() {
   function closeDropdown() {
     setIsOpen(false);
   }
+
+  async function handleSignOut() {
+    await signOut({ redirect: false });
+    closeDropdown();
+  }
+  
   return (
     <div className="relative inline-block">
       <button
@@ -118,7 +125,7 @@ export default function DropdownWithIcon() {
           </li>
           <li>
             <DropdownItem
-              onItemClick={closeDropdown}
+              onItemClick={handleSignOut}
               className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-white/5"
             >
               <svg
