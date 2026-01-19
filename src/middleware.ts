@@ -1,30 +1,49 @@
-import { withAuth } from "next-auth/middleware";
+import { updateSession } from "@/lib/supabase/middleware";
+import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Checks for a valid session token.
- * If not found, redirects to /signin
+ * Middleware for Supabase authentication
+ *
+ * Flow:
+ * 1. Refresh session if needed (via updateSession)
+ * 2. Check if user is authenticated
+ * 3. For protected routes, verify user has is_agent = true
+ * 4. Redirect unauthenticated users to /signin
  */
+export async function middleware(request: NextRequest) {
+  const { supabaseResponse, user } = await updateSession(request);
 
-export default withAuth(
-  function middleware(req) {
-    // Custom logic if needed
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token, // If there's a token, user is authenticated
-    },
+  // Public routes that don't require auth
+  const publicRoutes = ["/signin", "/signup", "/reset-password", "/auth/callback"];
+  const isPublicRoute = publicRoutes.some(route =>
+    request.nextUrl.pathname.startsWith(route)
+  );
+
+  // Allow public routes
+  if (isPublicRoute) {
+    return supabaseResponse;
   }
-);
 
-// This pattern means: match all routes except:
-// - Anything in the /api (like /api/auth for NextAuth itself)
-// - The /_next (internal Next.js files)
-// - The /signin or /signup (or your entire /(auth) segment)
+  // Protected routes require authentication
+  if (!user) {
+    const redirectUrl = new URL("/signin", request.url);
+    redirectUrl.searchParams.set("redirectedFrom", request.nextUrl.pathname);
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  // User is authenticated, continue
+  return supabaseResponse;
+}
+
 export const config = {
   matcher: [
-    // "/((?!api|_next|.*\\.(svg|jpg|png|css|js)$|signin|signup|register|.*auth).*)",
-    "/",
-    "/dashboard/:path*",
-    "/some-other-protected-route",
+    /*
+     * Match all request paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public files (images, etc.)
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

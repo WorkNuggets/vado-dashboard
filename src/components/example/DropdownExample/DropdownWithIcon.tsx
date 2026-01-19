@@ -1,11 +1,12 @@
 "use client";
 import { Dropdown } from "@/components/ui/dropdown/Dropdown";
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
-import { signOut } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import React, { useState } from "react";
 
 export default function DropdownWithIcon() {
   const [isOpen, setIsOpen] = useState(false);
+  const { signOut } = useAuth();
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -16,7 +17,7 @@ export default function DropdownWithIcon() {
   }
 
   async function handleSignOut() {
-    await signOut({ redirect: false });
+    await signOut();
     closeDropdown();
   }
   
