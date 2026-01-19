@@ -34,8 +34,8 @@ export function useStreamChat() {
         await chatClient.connectUser(
           {
             id: userId,
-            name: user.user_metadata?.full_name || user.email || "User",
-            image: user.user_metadata?.avatar_url,
+            name: user?.user_metadata?.full_name || user?.email || "User",
+            image: user?.user_metadata?.avatar_url,
           },
           token
         );

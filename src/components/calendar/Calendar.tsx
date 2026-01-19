@@ -9,12 +9,21 @@ import { useModal } from "@/hooks/useModal";
 import { Modal } from "@/components/ui/modal";
 
 interface CalendarEvent extends EventInput {
-  extendedProps: {
-    calendar: string;
+  extendedProps?: {
+    calendar?: string;
+    type?: string;
+    status?: string;
+    propertyAddress?: string;
+    clientName?: string;
+    requestId?: string;
   };
 }
 
-const Calendar: React.FC = () => {
+interface CalendarProps {
+  events?: EventInput[];
+}
+
+const Calendar: React.FC<CalendarProps> = ({ events: externalEvents }) => {
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [eventTitle, setEventTitle] = useState("");
   const [eventStartDate, setEventStartDate] = useState("");
@@ -32,29 +41,34 @@ const Calendar: React.FC = () => {
   };
 
   useEffect(() => {
-    // Initialize with some events
-    setEvents([
-      {
-        id: "1",
-        title: "Event Conf.",
-        start: new Date().toISOString().split("T")[0],
-        extendedProps: { calendar: "Danger" },
-      },
-      {
-        id: "2",
-        title: "Meeting",
-        start: new Date(Date.now() + 86400000).toISOString().split("T")[0],
-        extendedProps: { calendar: "Success" },
-      },
-      {
-        id: "3",
-        title: "Workshop",
-        start: new Date(Date.now() + 172800000).toISOString().split("T")[0],
-        end: new Date(Date.now() + 259200000).toISOString().split("T")[0],
-        extendedProps: { calendar: "Primary" },
-      },
-    ]);
-  }, []);
+    if (externalEvents && externalEvents.length > 0) {
+      // Use external events if provided
+      setEvents(externalEvents);
+    } else {
+      // Initialize with demo events if no external events
+      setEvents([
+        {
+          id: "1",
+          title: "Event Conf.",
+          start: new Date().toISOString().split("T")[0],
+          extendedProps: { calendar: "Danger" },
+        },
+        {
+          id: "2",
+          title: "Meeting",
+          start: new Date(Date.now() + 86400000).toISOString().split("T")[0],
+          extendedProps: { calendar: "Success" },
+        },
+        {
+          id: "3",
+          title: "Workshop",
+          start: new Date(Date.now() + 172800000).toISOString().split("T")[0],
+          end: new Date(Date.now() + 259200000).toISOString().split("T")[0],
+          extendedProps: { calendar: "Primary" },
+        },
+      ]);
+    }
+  }, [externalEvents]);
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     resetModalFields();
@@ -69,7 +83,7 @@ const Calendar: React.FC = () => {
     setEventTitle(event.title);
     setEventStartDate(event.start?.toISOString().split("T")[0] || "");
     setEventEndDate(event.end?.toISOString().split("T")[0] || "");
-    setEventLevel(event.extendedProps.calendar);
+    setEventLevel(event.extendedProps?.calendar || "");
     openModal();
   };
 
@@ -254,7 +268,8 @@ const Calendar: React.FC = () => {
 };
 
 const renderEventContent = (eventInfo: EventContentArg) => {
-  const colorClass = `fc-bg-${eventInfo.event.extendedProps.calendar.toLowerCase()}`;
+  const calendar = eventInfo.event.extendedProps?.calendar;
+  const colorClass = calendar ? `fc-bg-${calendar.toLowerCase()}` : "";
   return (
     <div className={`event-fc-color flex fc-event-main ${colorClass} p-1 rounded-sm`}>
       <div className="fc-daygrid-event-dot"></div>
