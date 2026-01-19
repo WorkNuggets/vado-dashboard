@@ -8,19 +8,24 @@ import { Modal } from "../ui/modal";
 import type { Profile, AgentProfile } from "@/types/entities";
 import { updateAgentProfile } from "@/services/profile.service";
 
-interface UserAddressCardProps {
+interface BrokerageCardProps {
   profile: Profile;
   agentProfile: AgentProfile | null;
   onUpdate: () => void;
 }
 
-export default function UserAddressCard({ profile, agentProfile, onUpdate }: UserAddressCardProps) {
+export default function BrokerageCard({
+  profile,
+  agentProfile,
+  onUpdate,
+}: BrokerageCardProps) {
   const { isOpen, openModal, closeModal } = useModal();
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
+    brokerageName: agentProfile?.brokerage_name || "",
     brokerageAddress: agentProfile?.brokerage_address || "",
-    licenseState: agentProfile?.license_state || "",
-    serviceAreas: agentProfile?.service_areas?.join(", ") || "",
+    brokeragePhone: agentProfile?.brokerage_phone || "",
+    websiteUrl: agentProfile?.website_url || "",
   });
 
   const handleSave = async () => {
@@ -29,23 +34,18 @@ export default function UserAddressCard({ profile, agentProfile, onUpdate }: Use
     try {
       setSaving(true);
 
-      // Convert service areas from comma-separated string to array
-      const serviceAreasArray = formData.serviceAreas
-        .split(",")
-        .map((area) => area.trim())
-        .filter((area) => area.length > 0);
-
       await updateAgentProfile(profile.id, {
-        brokerage_address: formData.brokerageAddress,
-        license_state: formData.licenseState,
-        service_areas: serviceAreasArray,
+        brokerage_name: formData.brokerageName,
+        brokerage_address: formData.brokerageAddress || null,
+        brokerage_phone: formData.brokeragePhone || null,
+        website_url: formData.websiteUrl || null,
       });
 
       onUpdate();
       closeModal();
     } catch (error) {
-      console.error("Failed to update address:", error);
-      alert("Failed to update address. Please try again.");
+      console.error("Failed to update brokerage info:", error);
+      alert("Failed to update brokerage info. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -59,39 +59,57 @@ export default function UserAddressCard({ profile, agentProfile, onUpdate }: Use
     <>
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-          <div>
-            <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
-              Location & Service Areas
+          <div className="w-full">
+            <h4 className="mb-6 text-lg font-semibold text-gray-800 dark:text-white/90">
+              Brokerage Information
             </h4>
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
               <div>
                 <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                  Brokerage Address
+                  Brokerage Name
+                </p>
+                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                  {agentProfile.brokerage_name || "—"}
+                </p>
+              </div>
+
+              <div>
+                <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                  Phone
+                </p>
+                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                  {agentProfile.brokerage_phone || "—"}
+                </p>
+              </div>
+
+              <div className="col-span-2 lg:col-span-1">
+                <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                  Address
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
                   {agentProfile.brokerage_address || "—"}
                 </p>
               </div>
 
-              <div>
+              <div className="col-span-2 lg:col-span-1">
                 <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                  License State
+                  Website
                 </p>
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {agentProfile.license_state || "—"}
-                </p>
-              </div>
-
-              <div className="col-span-2">
-                <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                  Service Areas
-                </p>
-                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  {agentProfile.service_areas && agentProfile.service_areas.length > 0
-                    ? agentProfile.service_areas.join(", ")
-                    : "—"}
-                </p>
+                {agentProfile.website_url ? (
+                  <a
+                    href={agentProfile.website_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                  >
+                    {agentProfile.website_url}
+                  </a>
+                ) : (
+                  <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                    —
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -119,55 +137,82 @@ export default function UserAddressCard({ profile, agentProfile, onUpdate }: Use
           </button>
         </div>
       </div>
+
       <Modal isOpen={isOpen} onClose={closeModal} className="max-w-[700px] m-4">
         <div className="relative w-full p-4 overflow-y-auto bg-white no-scrollbar rounded-3xl dark:bg-gray-900 lg:p-11">
           <div className="px-2 pr-14">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Edit Location & Service Areas
+              Edit Brokerage Information
             </h4>
             <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-              Update your brokerage location and service areas.
+              Update your brokerage details and contact information.
             </p>
           </div>
           <form className="flex flex-col">
             <div className="px-2 overflow-y-auto custom-scrollbar">
               <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                 <div className="col-span-2">
+                  <Label>Brokerage Name</Label>
+                  <Input
+                    type="text"
+                    value={formData.brokerageName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, brokerageName: e.target.value })
+                    }
+                    placeholder="e.g., Keller Williams Realty"
+                  />
+                </div>
+
+                <div className="col-span-2">
                   <Label>Brokerage Address</Label>
                   <Input
                     type="text"
                     value={formData.brokerageAddress}
-                    onChange={(e) => setFormData({ ...formData, brokerageAddress: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        brokerageAddress: e.target.value,
+                      })
+                    }
                     placeholder="123 Main St, City, State, ZIP"
                   />
                 </div>
 
-                <div className="col-span-2">
-                  <Label>License State</Label>
+                <div className="col-span-2 lg:col-span-1">
+                  <Label>Brokerage Phone</Label>
                   <Input
-                    type="text"
-                    value={formData.licenseState}
-                    onChange={(e) => setFormData({ ...formData, licenseState: e.target.value })}
-                    placeholder="e.g., CA, TX, NY"
+                    type="tel"
+                    value={formData.brokeragePhone}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        brokeragePhone: e.target.value,
+                      })
+                    }
+                    placeholder="(555) 123-4567"
                   />
                 </div>
 
-                <div className="col-span-2">
-                  <Label>Service Areas</Label>
+                <div className="col-span-2 lg:col-span-1">
+                  <Label>Website URL</Label>
                   <Input
                     type="text"
-                    value={formData.serviceAreas}
-                    onChange={(e) => setFormData({ ...formData, serviceAreas: e.target.value })}
-                    placeholder="e.g., Phoenix, Scottsdale, Tempe (comma-separated)"
+                    value={formData.websiteUrl}
+                    onChange={(e) =>
+                      setFormData({ ...formData, websiteUrl: e.target.value })
+                    }
+                    placeholder="https://example.com"
                   />
-                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    Separate multiple areas with commas
-                  </p>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-              <Button size="sm" variant="outline" onClick={closeModal} disabled={saving}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={closeModal}
+                disabled={saving}
+              >
                 Close
               </Button>
               <Button size="sm" onClick={handleSave} disabled={saving}>

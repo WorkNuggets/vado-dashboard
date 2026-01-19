@@ -5,6 +5,9 @@ import { getAgentStats } from "@/services/agent.service";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import TourRequestsChart from "@/components/analytics/TourRequestsChart";
+import PropertyPerformanceChart from "@/components/analytics/PropertyPerformanceChart";
+import StatusDistributionChart from "@/components/analytics/StatusDistributionChart";
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
@@ -296,6 +299,42 @@ export default function DashboardPage() {
             </span>
           </Link>
         </div>
+      </div>
+
+      {/* Analytics Charts Section */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* Tour Requests Trend */}
+        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            Tour Requests Trend
+          </h2>
+          <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
+            Last 30 days of tour request activity
+          </p>
+          <TourRequestsChart agentId={user.id} days={30} />
+        </div>
+
+        {/* Status Distribution */}
+        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            Request Status Distribution
+          </h2>
+          <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
+            Breakdown of tour request statuses
+          </p>
+          <StatusDistributionChart agentId={user.id} />
+        </div>
+      </div>
+
+      {/* Property Performance - Full Width */}
+      <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+        <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+          Property Performance
+        </h2>
+        <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
+          Tour requests by property
+        </p>
+        <PropertyPerformanceChart agentId={user.id} />
       </div>
     </div>
   );

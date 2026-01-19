@@ -44,6 +44,7 @@
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.5",
     "react-flatpickr": "^3.10.13",
+    "recharts": "^3.6.0",
     "simplebar-react": "^3.3.0",
     "stream-chat": "^9.28.0",
     "stream-chat-react": "^13.13.3",

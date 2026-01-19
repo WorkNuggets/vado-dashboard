@@ -15,6 +15,8 @@ export default function SignInForm() {
   const [isChecked, setIsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const searchParams = useSearchParams();
   const supabase = createClient();
 
@@ -68,6 +70,77 @@ export default function SignInForm() {
       if (error) throw error;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to sign in with Apple");
+      setLoading(false);
+    }
+  };
+
+  const handleEmailSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setError("Please enter both email and password");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      // Check if user is an agent or has @vadoapp.com email
+      if (data.user) {
+        const isVadoEmail = data.user.email?.endsWith("@vadoapp.com") || false;
+
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("is_agent")
+          .eq("id", data.user.id)
+          .single();
+
+        // If profile doesn't exist, create it
+        if (profileError && profileError.code === "PGRST116") {
+          const { error: createError } = await supabase.from("profiles").insert({
+            id: data.user.id,
+            full_name: data.user.user_metadata?.full_name || data.user.email?.split("@")[0] || "Agent",
+            email: data.user.email,
+            is_agent: isVadoEmail, // Auto-approve @vadoapp.com emails
+          });
+
+          if (createError && createError.code !== "23505") {
+            console.error("Failed to create profile:", createError);
+          }
+
+          // If @vadoapp.com email, allow access
+          if (isVadoEmail) {
+            window.location.href = "/";
+            return;
+          } else {
+            await supabase.auth.signOut();
+            throw new Error("Only real estate agents can access this dashboard");
+          }
+        }
+
+        if (profileError && profileError.code !== "PGRST116") {
+          throw new Error("Failed to fetch user profile");
+        }
+
+        // Allow access if user is marked as agent or has @vadoapp.com email
+        if (!profile?.is_agent && !isVadoEmail) {
+          await supabase.auth.signOut();
+          throw new Error("Only real estate agents can access this dashboard");
+        }
+
+        // Redirect to dashboard
+        window.location.href = "/";
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to sign in");
       setLoading(false);
     }
   };
@@ -155,13 +228,19 @@ export default function SignInForm() {
                 </span>
               </div>
             </div>
-            <form>
+            <form onSubmit={handleEmailSignIn}>
               <div className="space-y-6">
                 <div>
                   <Label>
                     Email <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input placeholder="info@gmail.com" />
+                  <Input
+                    type="email"
+                    placeholder="info@gmail.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={loading}
+                  />
                 </div>
                 <div>
                   <Label>
@@ -171,6 +250,9 @@ export default function SignInForm() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={loading}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -199,22 +281,31 @@ export default function SignInForm() {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
-                    Sign in
+                  <Button className="w-full" size="sm" disabled={loading}>
+                    {loading ? "Signing in..." : "Sign in"}
                   </Button>
                 </div>
               </div>
             </form>
 
-            <div className="mt-5">
+            <div className="mt-5 space-y-2">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Don&apos;t have an account? {""}
+                Don&apos;t have an account?{" "}
                 <Link
                   href="/signup"
                   className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
                   Sign Up
                 </Link>
+              </p>
+              <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
+                Need help?{" "}
+                <a
+                  href="mailto:support@vadoapp.com"
+                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                >
+                  Contact Support
+                </a>
               </p>
             </div>
           </div>

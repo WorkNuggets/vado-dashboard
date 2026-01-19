@@ -95,7 +95,7 @@ export default function CalendarPage() {
         </div>
       </div>
 
-      <Calendar events={events} />
+      <Calendar events={events} onEventsUpdate={loadEvents} />
     </div>
   );
 }

@@ -7,6 +7,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { EventInput, DateSelectArg, EventClickArg, EventContentArg } from "@fullcalendar/core";
 import { useModal } from "@/hooks/useModal";
 import { Modal } from "@/components/ui/modal";
+import TourDetailsModal from "./TourDetailsModal";
 
 interface CalendarEvent extends EventInput {
   extendedProps?: {
@@ -21,17 +22,20 @@ interface CalendarEvent extends EventInput {
 
 interface CalendarProps {
   events?: EventInput[];
+  onEventsUpdate?: () => void;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ events: externalEvents }) => {
+const Calendar: React.FC<CalendarProps> = ({ events: externalEvents, onEventsUpdate }) => {
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [eventTitle, setEventTitle] = useState("");
   const [eventStartDate, setEventStartDate] = useState("");
   const [eventEndDate, setEventEndDate] = useState("");
   const [eventLevel, setEventLevel] = useState("");
   const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [tourRequestId, setTourRequestId] = useState<string | null>(null);
   const calendarRef = useRef<FullCalendar>(null);
   const { isOpen, openModal, closeModal } = useModal();
+  const { isOpen: isTourModalOpen, openModal: openTourModal, closeModal: closeTourModal } = useModal();
 
   const calendarsEvents = {
     Danger: "danger",
@@ -79,12 +83,20 @@ const Calendar: React.FC<CalendarProps> = ({ events: externalEvents }) => {
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     const event = clickInfo.event;
-    setSelectedEvent(event as unknown as CalendarEvent);
-    setEventTitle(event.title);
-    setEventStartDate(event.start?.toISOString().split("T")[0] || "");
-    setEventEndDate(event.end?.toISOString().split("T")[0] || "");
-    setEventLevel(event.extendedProps?.calendar || "");
-    openModal();
+
+    // Check if this is a tour event
+    if (event.extendedProps?.type === "tour" && event.extendedProps?.requestId) {
+      setTourRequestId(event.extendedProps.requestId);
+      openTourModal();
+    } else {
+      // Regular calendar event - use existing edit modal
+      setSelectedEvent(event as unknown as CalendarEvent);
+      setEventTitle(event.title);
+      setEventStartDate(event.start?.toISOString().split("T")[0] || "");
+      setEventEndDate(event.end?.toISOString().split("T")[0] || "");
+      setEventLevel(event.extendedProps?.calendar || "");
+      openModal();
+    }
   };
 
   const handleAddOrUpdateEvent = () => {
@@ -263,6 +275,16 @@ const Calendar: React.FC<CalendarProps> = ({ events: externalEvents }) => {
           </div>
         </div>
       </Modal>
+
+      {/* Tour Details Modal */}
+      {tourRequestId && (
+        <TourDetailsModal
+          isOpen={isTourModalOpen}
+          onClose={closeTourModal}
+          requestId={tourRequestId}
+          onUpdate={onEventsUpdate}
+        />
+      )}
     </div>
   );
 };

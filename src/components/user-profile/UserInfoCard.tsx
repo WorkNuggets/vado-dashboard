@@ -1,18 +1,55 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useModal } from "../../hooks/useModal";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
+import type { Profile, AgentProfile } from "@/types/entities";
+import { updateProfile, updateAgentProfile } from "@/services/profile.service";
 
-export default function UserInfoCard() {
+interface UserInfoCardProps {
+  profile: Profile;
+  agentProfile: AgentProfile | null;
+  onUpdate: () => void;
+}
+
+export default function UserInfoCard({ profile, agentProfile, onUpdate }: UserInfoCardProps) {
   const { isOpen, openModal, closeModal } = useModal();
-  const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving changes...");
-    closeModal();
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: profile.full_name || "",
+    phone: profile.phone || "",
+    bio: agentProfile?.bio || "",
+  });
+
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+
+      // Update profile
+      await updateProfile(profile.id, {
+        full_name: formData.fullName,
+        phone: formData.phone,
+      });
+
+      // Update agent profile if it exists
+      if (agentProfile) {
+        await updateAgentProfile(profile.id, {
+          bio: formData.bio,
+        });
+      }
+
+      onUpdate();
+      closeModal();
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      alert("Failed to update profile. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
+
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
@@ -24,16 +61,11 @@ export default function UserInfoCard() {
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                First Name
+                Full Name
               </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">Nigel</p>
-            </div>
-
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Last Name
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {profile.full_name || "—"}
               </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">O&#39;Donnel</p>
             </div>
 
             <div>
@@ -41,21 +73,25 @@ export default function UserInfoCard() {
                 Email address
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                nigel@vadoapp.com
+                {profile.email || "—"}
               </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Phone</p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +1 541 602 9541
+                {profile.phone || "—"}
               </p>
             </div>
 
-            <div>
-              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Bio</p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">Team Manager</p>
-            </div>
+            {agentProfile && (
+              <div className="col-span-2">
+                <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Bio</p>
+                <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                  {agentProfile.bio || "—"}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -127,39 +163,50 @@ export default function UserInfoCard() {
                 </h5>
 
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>First Name</Label>
-                    <Input type="text" defaultValue="Nigel" />
-                  </div>
-
-                  <div className="col-span-2 lg:col-span-1">
-                    <Label>Last Name</Label>
-                    <Input type="text" defaultValue="O'Donnel" />
+                  <div className="col-span-2">
+                    <Label>Full Name</Label>
+                    <Input
+                      type="text"
+                      value={formData.fullName}
+                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Email Address</Label>
-                    <Input type="text" defaultValue="nigel@vadoapp.com" />
+                    <Input type="email" value={profile.email || ""} disabled />
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Email cannot be changed</p>
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Phone</Label>
-                    <Input type="text" defaultValue="+1 541 602 9541" />
+                    <Input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
                   </div>
 
-                  <div className="col-span-2">
-                    <Label>Bio</Label>
-                    <Input type="text" defaultValue="Team Manager" />
-                  </div>
+                  {agentProfile && (
+                    <div className="col-span-2">
+                      <Label>Bio</Label>
+                      <textarea
+                        className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                        rows={3}
+                        value={formData.bio}
+                        onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-              <Button size="sm" variant="outline" onClick={closeModal}>
+              <Button size="sm" variant="outline" onClick={closeModal} disabled={saving}>
                 Close
               </Button>
-              <Button size="sm" onClick={handleSave}>
-                Save Changes
+              <Button size="sm" onClick={handleSave} disabled={saving}>
+                {saving ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </form>

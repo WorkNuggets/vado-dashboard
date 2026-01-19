@@ -2,14 +2,191 @@
 import Checkbox from "@/components/form/input/Checkbox";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
+import Button from "@/components/ui/button/Button";
 import { EyeCloseIcon, EyeIcon } from "@/icons";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import React, { useState } from "react";
 import Back from "./Back";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordTouched, setPasswordTouched] = useState(false);
+  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
+  const supabase = createClient();
+
+  // Password strength validation
+  const passwordValidation = {
+    minLength: password.length >= 8,
+    hasUppercase: /[A-Z]/.test(password),
+    hasNumber: /[0-9]/.test(password),
+    hasSymbol: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+  };
+
+  const isPasswordValid = Object.values(passwordValidation).every(Boolean);
+
+  // Check if passwords match
+  const passwordsMatch = confirmPassword.length > 0 && password === confirmPassword;
+  const passwordsDontMatch = confirmPassword.length > 0 && password !== confirmPassword;
+
+  // Calculate password strength score (0-4)
+  const passwordStrength = Object.values(passwordValidation).filter(Boolean).length;
+  const getPasswordStrengthColor = () => {
+    if (passwordStrength === 0) return "bg-gray-200 dark:bg-gray-700";
+    if (passwordStrength <= 2) return "bg-red-500";
+    if (passwordStrength === 3) return "bg-yellow-500";
+    return "bg-green-500";
+  };
+  const getPasswordStrengthText = () => {
+    if (passwordStrength === 0) return "";
+    if (passwordStrength <= 2) return "Weak";
+    if (passwordStrength === 3) return "Good";
+    return "Strong";
+  };
+  const getPasswordStrengthTextColor = () => {
+    if (passwordStrength <= 2) return "text-red-600 dark:text-red-400";
+    if (passwordStrength === 3) return "text-yellow-600 dark:text-yellow-400";
+    return "text-green-600 dark:text-green-400";
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) throw error;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to sign up with Google");
+      setLoading(false);
+    }
+  };
+
+  const handleEmailSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    if (!isChecked) {
+      setError("You must agree to the Terms and Conditions");
+      return;
+    }
+
+    if (!isPasswordValid) {
+      setError("Password must meet all requirements");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Sign up user
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: `${firstName} ${lastName}`,
+            first_name: firstName,
+            last_name: lastName,
+          },
+        },
+      });
+
+      if (signUpError) {
+        // Check for specific error types
+        if (signUpError.message.includes("already registered")) {
+          throw new Error("An account with this email already exists. Please sign in instead.");
+        }
+        throw signUpError;
+      }
+
+      // Check if user was actually created (Supabase returns user even if already exists)
+      if (data.user && data.user.identities && data.user.identities.length === 0) {
+        throw new Error("An account with this email already exists. Please sign in instead.");
+      }
+
+      if (data.user) {
+        // Check if @vadoapp.com email for auto-agent approval
+        const isVadoEmail = email.endsWith("@vadoapp.com");
+
+        // Create profile with full_name
+        const { error: profileError } = await supabase.from("profiles").insert({
+          id: data.user.id,
+          full_name: `${firstName} ${lastName}`,
+          email: email,
+          is_agent: isVadoEmail, // Auto-approve @vadoapp.com emails as agents
+        });
+
+        if (profileError) {
+          console.error("Profile creation error:", profileError);
+        }
+
+        // Check if email confirmation is required
+        const emailConfirmationRequired = !data.session; // No session means confirmation is required
+
+        if (isVadoEmail) {
+          if (emailConfirmationRequired) {
+            setSuccess(
+              "Account created successfully! Please check your email to verify your account, then you can sign in. If you don't receive an email, check your spam folder or contact support@vadoapp.com."
+            );
+          } else {
+            setSuccess(
+              "Account created successfully! You can now sign in."
+            );
+          }
+        } else {
+          if (emailConfirmationRequired) {
+            setSuccess(
+              "Account created! Please check your email to verify your account. Note: Only @vadoapp.com email addresses have agent access. Contact support@vadoapp.com to become an agent."
+            );
+          } else {
+            setSuccess(
+              "Account created! However, only @vadoapp.com email addresses have agent access. Please contact support@vadoapp.com to become an agent."
+            );
+          }
+        }
+
+        // Clear form
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setIsChecked(false);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to sign up");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col flex-1 lg:w-1/2 w-full overflow-y-auto no-scrollbar">
       <Back className="w-full max-w-md sm:pt-10 mx-auto mb-5" />
@@ -22,10 +199,25 @@ export default function SignUpForm() {
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Enter your email and password to sign up!
             </p>
+            {error && (
+              <div className="mt-3 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="mt-3 p-3 text-sm text-green-600 bg-green-50 border border-green-200 rounded-lg dark:bg-green-900/20 dark:border-green-800 dark:text-green-400">
+                {success}
+              </div>
+            )}
           </div>
           <div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
-              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
+            <div className="grid grid-cols-1 gap-3">
+              <button
+                onClick={handleGoogleSignUp}
+                disabled={loading}
+                type="button"
+                className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 <svg
                   width="20"
                   height="20"
@@ -50,20 +242,7 @@ export default function SignUpForm() {
                     fill="#EB4335"
                   />
                 </svg>
-                Sign up with Google
-              </button>
-              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
-                <svg
-                  width="21"
-                  className="fill-current"
-                  height="20"
-                  viewBox="0 0 21 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M15.6705 1.875H18.4272L12.4047 8.75833L19.4897 18.125H13.9422L9.59717 12.4442L4.62554 18.125H1.86721L8.30887 10.7625L1.51221 1.875H7.20054L11.128 7.0675L15.6705 1.875ZM14.703 16.475H16.2305L6.37054 3.43833H4.73137L14.703 16.475Z" />
-                </svg>
-                Sign up with X
+                {loading ? "Signing up..." : "Sign up with Google"}
               </button>
             </div>
             <div className="relative py-3 sm:py-5">
@@ -76,7 +255,7 @@ export default function SignUpForm() {
                 </span>
               </div>
             </div>
-            <form>
+            <form onSubmit={handleEmailSignUp}>
               <div className="space-y-5">
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   {/* <!-- First Name --> */}
@@ -89,6 +268,9 @@ export default function SignUpForm() {
                       id="fname"
                       name="fname"
                       placeholder="Enter your first name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      disabled={loading}
                     />
                   </div>
                   {/* <!-- Last Name --> */}
@@ -96,7 +278,15 @@ export default function SignUpForm() {
                     <Label>
                       Last Name<span className="text-error-500">*</span>
                     </Label>
-                    <Input type="text" id="lname" name="lname" placeholder="Enter your last name" />
+                    <Input
+                      type="text"
+                      id="lname"
+                      name="lname"
+                      placeholder="Enter your last name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      disabled={loading}
+                    />
                   </div>
                 </div>
                 {/* <!-- Email --> */}
@@ -104,7 +294,15 @@ export default function SignUpForm() {
                   <Label>
                     Email<span className="text-error-500">*</span>
                   </Label>
-                  <Input type="email" id="email" name="email" placeholder="Enter your email" />
+                  <Input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={loading}
+                  />
                 </div>
                 {/* <!-- Password --> */}
                 <div>
@@ -113,8 +311,12 @@ export default function SignUpForm() {
                   </Label>
                   <div className="relative">
                     <Input
-                      placeholder="Enter your password"
+                      placeholder="Create a strong password"
                       type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onFocus={() => setPasswordTouched(true)}
+                      disabled={loading}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -127,6 +329,155 @@ export default function SignUpForm() {
                       )}
                     </span>
                   </div>
+
+                  {/* Password Strength Bar */}
+                  {passwordTouched && password.length > 0 && (
+                    <div className="mt-2">
+                      <div className="flex gap-1 mb-2">
+                        {[1, 2, 3, 4].map((bar) => (
+                          <div
+                            key={bar}
+                            className={`h-1 flex-1 rounded-full transition-colors ${
+                              bar <= passwordStrength ? getPasswordStrengthColor() : "bg-gray-200 dark:bg-gray-700"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      {getPasswordStrengthText() && (
+                        <p className={`text-xs font-medium ${getPasswordStrengthTextColor()}`}>
+                          Password strength: {getPasswordStrengthText()}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Password Strength Indicators */}
+                  {passwordTouched && (
+                    <div className="mt-3 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={`h-1.5 w-1.5 rounded-full ${
+                            passwordValidation.minLength
+                              ? "bg-green-500"
+                              : "bg-gray-300 dark:bg-gray-700"
+                          }`}
+                        />
+                        <span
+                          className={`text-xs ${
+                            passwordValidation.minLength
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-gray-500 dark:text-gray-400"
+                          }`}
+                        >
+                          At least 8 characters
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={`h-1.5 w-1.5 rounded-full ${
+                            passwordValidation.hasUppercase
+                              ? "bg-green-500"
+                              : "bg-gray-300 dark:bg-gray-700"
+                          }`}
+                        />
+                        <span
+                          className={`text-xs ${
+                            passwordValidation.hasUppercase
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-gray-500 dark:text-gray-400"
+                          }`}
+                        >
+                          One uppercase letter
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={`h-1.5 w-1.5 rounded-full ${
+                            passwordValidation.hasNumber
+                              ? "bg-green-500"
+                              : "bg-gray-300 dark:bg-gray-700"
+                          }`}
+                        />
+                        <span
+                          className={`text-xs ${
+                            passwordValidation.hasNumber
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-gray-500 dark:text-gray-400"
+                          }`}
+                        >
+                          One number
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={`h-1.5 w-1.5 rounded-full ${
+                            passwordValidation.hasSymbol
+                              ? "bg-green-500"
+                              : "bg-gray-300 dark:bg-gray-700"
+                          }`}
+                        />
+                        <span
+                          className={`text-xs ${
+                            passwordValidation.hasSymbol
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-gray-500 dark:text-gray-400"
+                          }`}
+                        >
+                          One special character (!@#$%^&*...)
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {/* <!-- Confirm Password --> */}
+                <div>
+                  <Label>
+                    Confirm Password<span className="text-error-500">*</span>
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      placeholder="Confirm your password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      onFocus={() => setConfirmPasswordTouched(true)}
+                      disabled={loading}
+                    />
+                    <span
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
+                      ) : (
+                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400" />
+                      )}
+                    </span>
+                  </div>
+
+                  {/* Password Match Indicator */}
+                  {confirmPasswordTouched && confirmPassword.length > 0 && (
+                    <div className="mt-3">
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={`h-1.5 w-1.5 rounded-full ${
+                            passwordsMatch
+                              ? "bg-green-500"
+                              : "bg-red-500"
+                          }`}
+                        />
+                        <span
+                          className={`text-xs ${
+                            passwordsMatch
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-red-600 dark:text-red-400"
+                          }`}
+                        >
+                          {passwordsMatch ? "Passwords match" : "Passwords do not match"}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 {/* <!-- Checkbox --> */}
                 <div className="flex items-center gap-3">
@@ -139,22 +490,31 @@ export default function SignUpForm() {
                 </div>
                 {/* <!-- Button --> */}
                 <div>
-                  <button className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
-                    Sign Up
-                  </button>
+                  <Button className="w-full" size="sm" disabled={loading}>
+                    {loading ? "Creating account..." : "Sign Up"}
+                  </Button>
                 </div>
               </div>
             </form>
 
-            <div className="mt-5">
+            <div className="mt-5 space-y-2">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Already have an account?
+                Already have an account?{" "}
                 <Link
                   href="/signin"
                   className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
                   Sign In
                 </Link>
+              </p>
+              <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
+                Need help?{" "}
+                <a
+                  href="mailto:support@vadoapp.com"
+                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                >
+                  Contact Support
+                </a>
               </p>
             </div>
           </div>

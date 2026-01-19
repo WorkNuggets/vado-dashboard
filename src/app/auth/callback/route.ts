@@ -38,6 +38,9 @@ export async function GET(request: Request) {
       );
     }
 
+    // Check if user has @vadoapp.com email - auto-approve as agent
+    const isVadoEmail = user.email?.endsWith("@vadoapp.com") || false;
+
     // Verify agent status
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
@@ -45,15 +48,49 @@ export async function GET(request: Request) {
       .eq("id", user.id)
       .single();
 
-    if (profileError) {
+    // If profile doesn't exist, create it
+    if (profileError && profileError.code === "PGRST116") {
+      console.log("Profile not found, creating new profile for:", user.email);
+
+      const { error: createError } = await supabase.from("profiles").insert({
+        id: user.id,
+        full_name: user.user_metadata?.full_name || user.email?.split("@")[0] || "Agent",
+        email: user.email,
+        is_agent: isVadoEmail, // Auto-approve @vadoapp.com emails as agents
+        avatar_url: user.user_metadata?.avatar_url || null,
+      });
+
+      if (createError) {
+        console.error("Failed to create profile:", createError);
+        // Continue anyway if it's a duplicate key error (race condition)
+        if (createError.code !== "23505") {
+          return NextResponse.redirect(
+            `${origin}/signin?error=profile_creation_error`
+          );
+        }
+      }
+
+      // If @vadoapp.com email, allow access
+      if (isVadoEmail) {
+        return NextResponse.redirect(`${origin}${next}`);
+      } else {
+        // For other emails, deny access
+        await supabase.auth.signOut();
+        return NextResponse.redirect(
+          `${origin}/signin?error=not_agent&message=${encodeURIComponent("Only real estate agents can access this dashboard. Please contact support if you believe this is an error.")}`
+        );
+      }
+    }
+
+    if (profileError && profileError.code !== "PGRST116") {
       console.error("Failed to fetch profile:", profileError);
       return NextResponse.redirect(
         `${origin}/signin?error=profile_fetch_error`
       );
     }
 
-    // Check if user is an agent
-    if (!profile?.is_agent) {
+    // Check if user is an agent or has @vadoapp.com email
+    if (!profile?.is_agent && !isVadoEmail) {
       // Sign out non-agent users
       await supabase.auth.signOut();
       return NextResponse.redirect(
