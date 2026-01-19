@@ -73,7 +73,8 @@ export default function TourRequestsPage() {
 
     setActionLoading(selectedRequest.id);
     try {
-      await approveTourRequest(selectedRequest.id, message, scheduledDate);
+      // TODO: Add scheduled_date support to approveTourRequest service
+      await approveTourRequest(selectedRequest.id, message);
       await loadRequests();
     } catch (err) {
       console.error(err);

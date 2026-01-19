@@ -74,6 +74,7 @@ export default function NewPropertyPage() {
 
     try {
       const propertyData = {
+        listing_agent_id: user.id,
         address: formData.address,
         city: formData.city,
         state: formData.state,
@@ -92,7 +93,7 @@ export default function NewPropertyPage() {
         longitude: formData.longitude ? parseFloat(formData.longitude) : null,
       };
 
-      const newProperty = await createProperty(propertyData, user.id);
+      const newProperty = await createProperty(propertyData);
       router.push(`/properties/${newProperty.id}`);
     } catch (err) {
       console.error("Error creating property:", err);
@@ -246,7 +247,7 @@ export default function NewPropertyPage() {
                 defaultValue={formData.year_built}
                 onChange={(e) => handleInputChange("year_built", e.target.value)}
                 min="1800"
-                max={new Date().getFullYear() + 1}
+                max={(new Date().getFullYear() + 1).toString()}
               />
             </div>
             <div>
@@ -345,9 +346,13 @@ export default function NewPropertyPage() {
           >
             Cancel
           </button>
-          <Button type="submit" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+          >
             {loading ? "Creating..." : "Create Property"}
-          </Button>
+          </button>
         </div>
       </form>
     </div>

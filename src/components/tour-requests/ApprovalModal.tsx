@@ -98,10 +98,11 @@ export default function ApprovalModal({
 
           <div>
             <Label>Scheduled Date & Time (Optional)</Label>
-            <Input
+            <input
               type="datetime-local"
               value={scheduledDate}
               onChange={(e) => setScheduledDate(e.target.value)}
+              className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
             />
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
               Set a specific date and time for the tour
@@ -117,9 +118,13 @@ export default function ApprovalModal({
             >
               Cancel
             </button>
-            <Button type="submit" disabled={loading}>
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+            >
               {loading ? "Approving..." : "Approve Tour"}
-            </Button>
+            </button>
           </div>
         </form>
       </div>

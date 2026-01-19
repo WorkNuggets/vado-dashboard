@@ -70,6 +70,12 @@ export default function EditPropertyPage() {
     try {
       const property = await getProperty(propertyId);
 
+      // Check if property exists
+      if (!property) {
+        setError("Property not found");
+        return;
+      }
+
       // Check if user owns this property
       if (property.listing_agent_id !== user?.id) {
         setError("You do not have permission to edit this property");
@@ -144,7 +150,7 @@ export default function EditPropertyPage() {
         longitude: formData.longitude ? parseFloat(formData.longitude) : null,
       };
 
-      await updateProperty(propertyId, propertyData, user.id);
+      await updateProperty(propertyId, propertyData);
       router.push(`/properties/${propertyId}`);
     } catch (err) {
       console.error("Error updating property:", err);
@@ -161,7 +167,7 @@ export default function EditPropertyPage() {
     setError(null);
 
     try {
-      await deleteProperty(propertyId, user.id);
+      await deleteProperty(propertyId);
       router.push("/properties");
     } catch (err) {
       console.error("Error deleting property:", err);
@@ -331,7 +337,7 @@ export default function EditPropertyPage() {
                 defaultValue={formData.year_built}
                 onChange={(e) => handleInputChange("year_built", e.target.value)}
                 min="1800"
-                max={new Date().getFullYear() + 1}
+                max={(new Date().getFullYear() + 1).toString()}
               />
             </div>
             <div>
@@ -430,9 +436,13 @@ export default function EditPropertyPage() {
           >
             Cancel
           </button>
-          <Button type="submit" disabled={saving}>
+          <button
+            type="submit"
+            disabled={saving}
+            className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-50"
+          >
             {saving ? "Saving..." : "Save Changes"}
-          </Button>
+          </button>
         </div>
       </form>
 
