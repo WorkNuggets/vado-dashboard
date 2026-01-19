@@ -45,6 +45,8 @@
     "react-dropzone": "^14.3.5",
     "react-flatpickr": "^3.10.13",
     "simplebar-react": "^3.3.0",
+    "stream-chat": "^9.28.0",
+    "stream-chat-react": "^13.13.3",
     "swiper": "^11.2.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^4.0.0"
