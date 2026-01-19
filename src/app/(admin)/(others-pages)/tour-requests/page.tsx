@@ -8,6 +8,8 @@ import {
   subscribeToTourRequests,
 } from "@/services/tourRequest.service";
 import type { TourRequestWithDetails } from "@/types/entities";
+import ApprovalModal from "@/components/tour-requests/ApprovalModal";
+import DenialModal from "@/components/tour-requests/DenialModal";
 import { useEffect, useState } from "react";
 
 type StatusFilter = "all" | "pending" | "approved" | "denied" | "cancelled";
@@ -19,6 +21,11 @@ export default function TourRequestsPage() {
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  // Modal state
+  const [approvalModalOpen, setApprovalModalOpen] = useState(false);
+  const [denialModalOpen, setDenialModalOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<TourRequestWithDetails | null>(null);
 
   useEffect(() => {
     if (user?.id) {
@@ -51,30 +58,41 @@ export default function TourRequestsPage() {
     }
   }
 
-  async function handleApprove(requestId: string) {
-    setActionLoading(requestId);
+  function openApprovalModal(request: TourRequestWithDetails) {
+    setSelectedRequest(request);
+    setApprovalModalOpen(true);
+  }
+
+  function openDenialModal(request: TourRequestWithDetails) {
+    setSelectedRequest(request);
+    setDenialModalOpen(true);
+  }
+
+  async function handleApproveSubmit(message: string, scheduledDate?: string) {
+    if (!selectedRequest) return;
+
+    setActionLoading(selectedRequest.id);
     try {
-      await approveTourRequest(requestId);
+      await approveTourRequest(selectedRequest.id, message, scheduledDate);
       await loadRequests();
     } catch (err) {
-      alert("Failed to approve request");
       console.error(err);
+      throw err; // Let modal handle error display
     } finally {
       setActionLoading(null);
     }
   }
 
-  async function handleDeny(requestId: string) {
-    const reason = prompt("Enter reason for denial (optional):");
-    if (reason === null) return; // User cancelled
+  async function handleDenySubmit(reason: string) {
+    if (!selectedRequest) return;
 
-    setActionLoading(requestId);
+    setActionLoading(selectedRequest.id);
     try {
-      await denyTourRequest(requestId, reason || "No reason provided");
+      await denyTourRequest(selectedRequest.id, reason);
       await loadRequests();
     } catch (err) {
-      alert("Failed to deny request");
       console.error(err);
+      throw err; // Let modal handle error display
     } finally {
       setActionLoading(null);
     }
@@ -312,14 +330,14 @@ export default function TourRequestsPage() {
                     {request.status === "pending" ? (
                       <div className="flex gap-2">
                         <button
-                          onClick={() => handleApprove(request.id)}
+                          onClick={() => openApprovalModal(request)}
                           disabled={actionLoading === request.id}
                           className="rounded bg-green-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600 disabled:opacity-50"
                         >
                           {actionLoading === request.id ? "..." : "Approve"}
                         </button>
                         <button
-                          onClick={() => handleDeny(request.id)}
+                          onClick={() => openDenialModal(request)}
                           disabled={actionLoading === request.id}
                           className="rounded bg-red-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-600 disabled:opacity-50"
                         >
@@ -369,6 +387,36 @@ export default function TourRequestsPage() {
           </p>
         </div>
       </div>
+
+      {/* Modals */}
+      {selectedRequest && (
+        <>
+          <ApprovalModal
+            isOpen={approvalModalOpen}
+            onClose={() => {
+              setApprovalModalOpen(false);
+              setSelectedRequest(null);
+            }}
+            onApprove={handleApproveSubmit}
+            propertyAddress={
+              selectedRequest.property?.address || "Unknown property"
+            }
+            clientName={selectedRequest.user?.full_name || "Unknown"}
+          />
+          <DenialModal
+            isOpen={denialModalOpen}
+            onClose={() => {
+              setDenialModalOpen(false);
+              setSelectedRequest(null);
+            }}
+            onDeny={handleDenySubmit}
+            propertyAddress={
+              selectedRequest.property?.address || "Unknown property"
+            }
+            clientName={selectedRequest.user?.full_name || "Unknown"}
+          />
+        </>
+      )}
     </div>
   );
 }

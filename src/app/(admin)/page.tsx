@@ -3,17 +3,26 @@
 import { useAuth } from "@/context/AuthContext";
 import { getAgentStats } from "@/services/agent.service";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
   const [stats, setStats] = useState({
     totalProperties: 0,
     pendingTourRequests: 0,
     approvedTourRequests: 0,
     scheduledTours: 0,
   });
-  const [loading, setLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push("/signin");
+    }
+  }, [authLoading, user, router]);
 
   useEffect(() => {
     if (user?.id) {
@@ -27,14 +36,51 @@ export default function DashboardPage() {
     try {
       const data = await getAgentStats(user.id);
       setStats(data);
-    } catch (error) {
-      console.error("Error loading stats:", error);
+    } catch (err) {
+      console.error("Error loading stats:", err);
+      setError("Failed to load dashboard stats");
     } finally {
-      setLoading(false);
+      setStatsLoading(false);
     }
   }
 
-  if (loading) {
+  // Show loading spinner while auth is loading
+  if (authLoading) {
+    return (
+      <div className="flex h-96 items-center justify-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-500 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  // If no user after auth loads, redirect is handled in useEffect
+  if (!user) {
+    return null;
+  }
+
+  // Show error if stats failed to load
+  if (error) {
+    return (
+      <div className="flex h-96 items-center justify-center">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-900/20">
+          <p className="text-red-800 dark:text-red-200">{error}</p>
+          <button
+            onClick={() => {
+              setError(null);
+              setStatsLoading(true);
+              loadStats();
+            }}
+            className="mt-4 rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading spinner while stats are loading
+  if (statsLoading) {
     return (
       <div className="flex h-96 items-center justify-center">
         <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-500 border-t-transparent"></div>

@@ -91,7 +91,8 @@ export default function SignInForm() {
             )}
           </div>
           <div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
+            {/* Apple Sign-In temporarily hidden until OAuth credentials are fixed */}
+            <div className="grid grid-cols-1 gap-3">
               <button
                 onClick={handleGoogleSignIn}
                 disabled={loading}
@@ -124,6 +125,7 @@ export default function SignInForm() {
                 </svg>
                 {loading ? "Signing in..." : "Sign in with Google"}
               </button>
+              {/* Apple Sign-In button hidden until credentials are configured in Supabase
               <button
                 onClick={handleAppleSignIn}
                 disabled={loading}
@@ -131,17 +133,17 @@ export default function SignInForm() {
                 className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <svg
-                  width="21"
-                  className="fill-current"
+                  width="20"
                   height="20"
-                  viewBox="0 0 21 20"
+                  viewBox="0 0 20 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M15.6705 1.875H18.4272L12.4047 8.75833L19.4897 18.125H13.9422L9.59717 12.4442L4.62554 18.125H1.86721L8.30887 10.7625L1.51221 1.875H7.20054L11.128 7.0675L15.6705 1.875ZM14.703 16.475H16.2305L6.37054 3.43833H4.73137L14.703 16.475Z" />
+                  <path d="M14.4463 10.0714C14.4643 11.9509 16.0357 12.6696 16.0536 12.6786C16.0357 12.7232 15.7857 13.6429 15.0893 14.5893C14.4643 15.4196 13.8214 16.25 12.8036 16.2679C11.8036 16.2857 11.5 15.6964 10.3571 15.6964C9.21429 15.6964 8.875 16.25 7.92857 16.2857C6.92857 16.3214 6.21429 15.3929 5.58929 14.5625C4.30357 12.8571 3.32143 9.73214 4.625 7.58929C5.26786 6.51786 6.42857 5.84821 7.66071 5.83036C8.625 5.8125 9.53571 6.44643 10.125 6.44643C10.6964 6.44643 11.8036 5.66071 13.0179 5.76786C13.5268 5.78571 15.0179 5.96429 15.9464 7.5C15.875 7.54464 14.4286 8.375 14.4463 10.0714ZM12.4107 4.51786C12.9107 3.92857 13.2679 3.10714 13.1786 2.26786C12.4643 2.30357 11.5893 2.73214 11.0536 3.32143C10.5893 3.83036 10.1607 4.67857 10.2679 5.48214C11.0714 5.53571 11.9107 5.10714 12.4107 4.51786Z" fill="currentColor"/>
                 </svg>
                 {loading ? "Signing in..." : "Sign in with Apple"}
               </button>
+              */}
             </div>
             <div className="relative py-3 sm:py-5">
               <div className="absolute inset-0 flex items-center">

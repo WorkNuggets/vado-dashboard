@@ -5,20 +5,11 @@ import { usePathname } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSidebar } from "../context/SidebarContext";
 import {
-  BoxCubeIcon,
   CalenderIcon,
   ChatIcon,
   ChevronDownIcon,
-  DocsIcon,
   GridIcon,
   HorizontaLDots,
-  ListIcon,
-  MailIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
-  TaskIcon,
   UserCircleIcon,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
@@ -30,17 +21,65 @@ type NavItem = {
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
 
+// Building/House icon for Properties
+const BuildingIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+    />
+  </svg>
+);
+
+// Clock icon for Tour Requests
+const ClockIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+);
+
 const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
+    path: "/",
+  },
+  {
+    icon: <BuildingIcon />,
+    name: "Properties",
     subItems: [
-      { name: "Real Estate", path: "/" },
-      { name: "Analytics", path: "/analytics" },
-      { name: "Marketing", path: "/marketing" },
-      { name: "CRM", path: "/crm" },
-      { name: "Supply", path: "/stocks" },
+      { name: "All Properties", path: "/properties" },
+      { name: "Add New", path: "/properties/new" },
     ],
+  },
+  {
+    icon: <ClockIcon />,
+    name: "Tour Requests",
+    path: "/tour-requests",
+  },
+  {
+    icon: <ChatIcon />,
+    name: "Messages",
+    path: "/messages",
   },
   {
     icon: <CalenderIcon />,
@@ -49,124 +88,14 @@ const navItems: NavItem[] = [
   },
   {
     icon: <UserCircleIcon />,
-    name: "User Profile",
+    name: "Profile",
     path: "/profile",
   },
-  {
-    name: "Tasks",
-    icon: <TaskIcon />,
-    subItems: [
-      { name: "List", path: "/task-list" },
-      { name: "Kanban", path: "/task-kanban" },
-    ],
-  },
-  {
-    name: "Forms",
-    icon: <ListIcon />,
-    subItems: [
-      { name: "Form Elements", path: "/form-elements" },
-      { name: "Form Layout", path: "/form-layout" },
-    ],
-  },
-  {
-    name: "Tables",
-    icon: <TableIcon />,
-    subItems: [
-      { name: "Basic Tables", path: "/basic-tables" },
-      { name: "Data Tables", path: "/data-tables" },
-    ],
-  },
-  {
-    name: "Pages",
-    icon: <PageIcon />,
-    subItems: [
-      { name: "File Manager", path: "/file-manager" },
-      { name: "Pricing Tables", path: "/pricing-tables" },
-      { name: "Faqs", path: "/faq" },
-      { name: "Blank Page", path: "/blank" },
-      { name: "404 Error", path: "/error-404" },
-      { name: "500 Error", path: "/error-500" },
-      { name: "503 Error", path: "/error-503" },
-      { name: "Coming Soon", path: "/coming-soon" },
-      { name: "Maintenance", path: "/maintenance" },
-      { name: "Success", path: "/success" },
-    ],
-  },
 ];
 
-const othersItems: NavItem[] = [
-  {
-    icon: <PieChartIcon />,
-    name: "Charts",
-    subItems: [
-      { name: "Line Chart", path: "/line-chart" },
-      { name: "Bar Chart", path: "/bar-chart" },
-      { name: "Pie Chart", path: "/pie-chart" },
-    ],
-  },
-  {
-    icon: <BoxCubeIcon />,
-    name: "Packages",
-    subItems: [
-      { name: "Alerts", path: "/alerts" },
-      { name: "Avatar", path: "/avatars" },
-      { name: "Badge", path: "/badge" },
-      { name: "Breadcrumb", path: "/breadcrumb" },
-      { name: "Buttons", path: "/buttons" },
-      { name: "Buttons Group", path: "/buttons-group" },
-      { name: "Cards", path: "/cards" },
-      { name: "Carousel", path: "/carousel" },
-      { name: "Dropdowns", path: "/dropdowns" },
-      { name: "Images", path: "/images" },
-      { name: "Links", path: "/links" },
-      { name: "List", path: "/list" },
-      { name: "Modals", path: "/modals" },
-      { name: "Notification", path: "/notifications" },
-      { name: "Pagination", path: "/pagination" },
-      { name: "Popovers", path: "/popovers" },
-      { name: "Progressbar", path: "/progress-bar" },
-      { name: "Ribbons", path: "/ribbons" },
-      { name: "Spinners", path: "/spinners" },
-      { name: "Tabs", path: "/tabs" },
-      { name: "Tooltips", path: "/tooltips" },
-      { name: "Videos", path: "/videos" },
-    ],
-  },
-  {
-    icon: <PlugInIcon />,
-    name: "Authentication",
-    subItems: [
-      { name: "Sign In", path: "/signin" },
-      { name: "Sign Up", path: "/signup" },
-      { name: "Reset Password", path: "/reset-password" },
-      {
-        name: "Two Step Verification",
-        path: "/two-step-verification",
-      },
-    ],
-  },
-];
+const othersItems: NavItem[] = [];
 
-const supportItems: NavItem[] = [
-  {
-    icon: <ChatIcon />,
-    name: "Chat",
-    path: "/chat",
-  },
-  {
-    icon: <MailIcon />,
-    name: "Email",
-    subItems: [
-      { name: "Inbox", path: "/inbox" },
-      { name: "Details", path: "/inbox-details" },
-    ],
-  },
-  {
-    icon: <DocsIcon />,
-    name: "Invoice",
-    path: "/invoice",
-  },
-];
+const supportItems: NavItem[] = [];
 
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
@@ -399,26 +328,6 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? "Menu" : <HorizontaLDots />}
               </h2>
               {renderMenuItems(navItems, "main")}
-            </div>
-            <div>
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? "Support" : <HorizontaLDots />}
-              </h2>
-              {renderMenuItems(supportItems, "support")}
-            </div>
-            <div>
-              <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-                }`}
-              >
-                {isExpanded || isHovered || isMobileOpen ? "Others" : <HorizontaLDots />}
-              </h2>
-              {renderMenuItems(othersItems, "others")}
             </div>
           </div>
         </nav>
