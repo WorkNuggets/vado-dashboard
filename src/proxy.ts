@@ -10,7 +10,7 @@ import { NextResponse, type NextRequest } from "next/server";
  * 3. For protected routes, verify user has is_agent = true
  * 4. Redirect unauthenticated users to /signin
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { supabaseResponse, user } = await updateSession(request);
 
   // Public routes that don't require auth
